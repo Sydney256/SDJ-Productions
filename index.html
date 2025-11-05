@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDJ Productions</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #000814, #001f3f, #00b4d8, #0077b6);
+      background-size: 300% 300%;
+      animation: gradientFlow 8s ease infinite;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      margin-top: 100px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      letter-spacing: 2px;
+      background: linear-gradient(to right, cyan, #00b4d8, #0077b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-btn {
+      margin-top: 40px;
+      padding: 15px 40px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(90deg, #00b4d8, #0096c7, #0077b6);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+    }
+
+    .login-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #0077b6, #0096c7, #00b4d8);
+      box-shadow: 0 0 25px rgba(0, 180, 216, 0.8);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    /* Optional: Smooth fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header, footer, .login-btn {
+      animation: fadeIn 1.2s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SDJ Productions</h1>
+    <button class="login-btn">Login</button>
+  </header>
+
+  <footer>
+    <p>Powered By Dev Studios</p>
+    <p>© 2025 Developer Studios</p>
+  </footer>
+</body>
+</html>
