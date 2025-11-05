@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SDJ Productions</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #000814, #001f3f, #00b4d8, #0077b6);
+      background-size: 300% 300%;
+      animation: gradientFlow 8s ease infinite;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.3);
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      background: linear-gradient(to right, cyan, #00b4d8, #0077b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      max-width: 600px;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    .back-btn {
+      margin-top: 40px;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      background: linear-gradient(90deg, #00b4d8, #0096c7, #0077b6);
+      color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #0077b6, #0096c7, #00b4d8);
+      box-shadow: 0 0 25px rgba(0, 180, 216, 0.8);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>SDJ Productions Dashboard</header>
+
+  <div class="content">
+    <h2>Welcome to Your Dashboard</h2>
+    <p>This is the main control area for SDJ Productions. You can add your content, analytics, or management panels here.</p>
+    <a href="index.html"><button class="back-btn">Logout</button></a>
+  </div>
+
+  <footer>
+    <p>Powered By Dev Studios</p>
+    <p>© 2025 Developer Studios</p>
+  </footer>
+</body>
+</html>
