@@ -170,7 +170,7 @@
       usernameInput.value = "";
     });
 
-    // Check Roblox username
+    // Check Roblox username (official Roblox API)
     submitUsername.addEventListener("click", async () => {
       const username = usernameInput.value.trim();
       if (!username) {
@@ -183,11 +183,16 @@
       message.style.color = "cyan";
 
       try {
-        const response = await fetch(`https://api.roblox.com/users/get-by-username?username=${encodeURIComponent(username)}`);
-        const data = await response.json();
+        const response = await fetch(`https://users.roblox.com/v1/usernames/users`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usernames: [username] })
+        });
 
-        if (data && data.Id) {
-          message.textContent = `Found ${username}!`;
+        const data = await response.json();
+        if (data.data && data.data.length > 0 && data.data[0].id) {
+          const user = data.data[0];
+          message.textContent = `Found ${user.name}! Redirecting...`;
           message.style.color = "lime";
 
           setTimeout(() => {
@@ -198,7 +203,7 @@
           message.style.color = "red";
         }
       } catch (error) {
-        message.textContent = "Error connecting to Roblox API.";
+        message.textContent = "Error connecting to Roblox.com.";
         message.style.color = "red";
       }
     });
