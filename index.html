@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SDJ Productions</title>
   <style>
     * {
@@ -73,15 +73,13 @@
       margin: 5px 0;
     }
 
-    /* Modal Styling */
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -92,47 +90,65 @@
       padding: 30px;
       border-radius: 15px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);
+      box-shadow: 0 0 20px rgba(0,180,216,0.6);
       width: 90%;
-      max-width: 400px;
+      max-width: 500px;
       animation: fadeIn 0.5s ease;
     }
 
-    .modal-content input {
-      width: 100%;
-      padding: 10px;
+    .option {
       margin: 15px 0;
+      padding: 12px 25px;
       border-radius: 8px;
-      border: none;
-      outline: none;
-      text-align: center;
-      font-size: 1rem;
+      background: linear-gradient(90deg, #00b4d8, #0096c7, #0077b6);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      display: block;
     }
 
-    .modal-content button {
+    .option:hover {
+      transform: scale(1.05);
+    }
+
+    .message {
+      margin-top: 10px;
+      min-height: 24px;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(20px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+
+    .input-area {
+      margin-top: 15px;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+      text-align: center;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button.verify {
+      margin-top: 15px;
       padding: 10px 25px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       background: linear-gradient(90deg, #00b4d8, #0096c7, #0077b6);
       color: #fff;
-      font-size: 1rem;
       transition: all 0.3s ease;
     }
 
-    .modal-content button:hover {
+    button.verify:hover {
       transform: scale(1.05);
-    }
-
-    .message {
-      margin-top: 15px;
-      font-size: 1rem;
-      min-height: 25px;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -142,11 +158,12 @@
     <button class="login-btn" id="loginBtn">Login</button>
   </header>
 
+  <!-- Login Option Modal -->
   <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <h2>Enter your Roblox Username</h2>
-      <input type="text" id="robloxUsername" placeholder="Roblox Username">
-      <button id="submitUsername">Submit</button>
+    <div class="modal-content" id="modalContent">
+      <h2>Choose a Login Method</h2>
+      <div class="option" id="profileMethod">🔹 Profile-Code Verification</div>
+      <div class="option" id="gameMethod">🔸 In-Game Verification</div>
       <div class="message" id="message"></div>
     </div>
   </div>
@@ -158,62 +175,77 @@
 
   <script>
     const loginBtn = document.getElementById("loginBtn");
-    const loginModal = document.getElementById("loginModal");
-    const submitUsername = document.getElementById("submitUsername");
-    const usernameInput = document.getElementById("robloxUsername");
+    const modal = document.getElementById("loginModal");
+    const profileMethod = document.getElementById("profileMethod");
+    const gameMethod = document.getElementById("gameMethod");
+    const modalContent = document.getElementById("modalContent");
     const message = document.getElementById("message");
 
-    // Show modal
-    loginBtn.addEventListener("click", () => {
-      loginModal.style.display = "flex";
-      message.textContent = "";
-      usernameInput.value = "";
-    });
+    loginBtn.onclick = () => { modal.style.display = "flex"; message.textContent = ""; };
 
-    // Check Roblox username (official Roblox API)
-    submitUsername.addEventListener("click", async () => {
-      const username = usernameInput.value.trim();
-      if (!username) {
-        message.textContent = "Please enter a username.";
-        message.style.color = "orange";
-        return;
-      }
+    // Profile Code Verification (Option 1)
+    profileMethod.onclick = () => {
+      modalContent.innerHTML = `
+        <h2>Profile-Code Verification</h2>
+        <p>1️⃣ Enter your Roblox username.</p>
+        <p>2️⃣ Add this code to your Roblox bio:</p>
+        <p style="color:cyan; font-weight:bold;">SDJ-${Math.floor(Math.random()*100000)}</p>
+        <div class="input-area">
+          <input id="username" placeholder="Roblox Username" />
+          <button class="verify" id="verifyBtn">Verify</button>
+          <div class="message" id="verifyMsg"></div>
+        </div>
+      `;
+      const verifyBtn = document.getElementById("verifyBtn");
+      const verifyMsg = document.getElementById("verifyMsg");
 
-      message.textContent = `Searching for ${username}...`;
-      message.style.color = "cyan";
+      verifyBtn.onclick = async () => {
+        const username = document.getElementById("username").value.trim();
+        if (!username) { verifyMsg.textContent = "Please enter a username."; return; }
+        verifyMsg.textContent = "Checking Roblox profile...";
+        try {
+          const res = await fetch("https://users.roblox.com/v1/usernames/users", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ usernames: [username] })
+          });
+          const data = await res.json();
+          if (data.data.length === 0) { verifyMsg.textContent = "User not found."; return; }
 
-      try {
-        const response = await fetch(`users.roblox.com`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ usernames: [username] })
-        });
+          const userId = data.data[0].id;
+          const descRes = await fetch(`https://users.roblox.com/v1/users/${userId}`);
+          const descData = await descRes.json();
 
-        const data = await response.json();
-        if (data.data && data.data.length > 0 && data.data[0].id) {
-          const user = data.data[0];
-          message.textContent = `Found ${user.name}! Redirecting...`;
-          message.style.color = "lime";
-
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 1500);
-        } else {
-          message.textContent = `Cannot find ${username}.`;
-          message.style.color = "red";
+          if (descData.description.includes("SDJ-")) {
+            verifyMsg.style.color = "lime";
+            verifyMsg.textContent = `Verified ${username}! Redirecting...`;
+            setTimeout(()=>window.location.href="dashboard.html",1500);
+          } else {
+            verifyMsg.style.color = "red";
+            verifyMsg.textContent = "Verification code not found in description.";
+          }
+        } catch {
+          verifyMsg.style.color = "red";
+          verifyMsg.textContent = "Error connecting to Roblox.";
         }
-      } catch (error) {
-        message.textContent = "Error connecting to Roblox.com.";
-        message.style.color = "red";
-      }
-    });
+      };
+    };
 
-    // Close modal if clicked outside
-    window.addEventListener("click", (e) => {
-      if (e.target === loginModal) {
-        loginModal.style.display = "none";
-      }
-    });
+    // In-Game Verification (Option 2)
+    gameMethod.onclick = () => {
+      modalContent.innerHTML = `
+        <h2>In-Game Verification</h2>
+        <p>1️⃣ Join our Roblox verification game.</p>
+        <p>2️⃣ Type <strong>!verify</strong> in chat.</p>
+        <p>3️⃣ Your account will link automatically!</p>
+        <a href="https://www.roblox.com/games/PLACEID" target="_blank">
+          <button class="verify">Open Verification Game</button>
+        </a>
+      `;
+    };
+
+    // Close modal if clicking outside
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
   </script>
 </body>
 </html>
